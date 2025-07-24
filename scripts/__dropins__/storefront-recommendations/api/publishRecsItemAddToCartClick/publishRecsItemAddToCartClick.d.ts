@@ -29,7 +29,6 @@ export interface PublishParams {
     yOffsetBottom: number;
     backupProducts?: number;
     searchTime?: number;
-    productId?: number;
 }
 /**
  * Publish a recs-item-add-to-cart-click event to the Adobe Client Data Layer (ACDL)
