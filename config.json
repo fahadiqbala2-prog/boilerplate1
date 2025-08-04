@@ -1,14 +1,14 @@
 {
   "public": {
     "default": {
-      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/73p2eopGivDm8R1pjMBijb/graphql",
-      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/73p2eopGivDm8R1pjMBijb/graphql",
+      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/QyEqr5zS1dMDikt66dgJnP/graphql",
+      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/QyEqr5zS1dMDikt66dgJnP/graphql",
       "headers": {
         "cs": {
-          "Magento-Environment-Id": "73p2eopGivDm8R1pjMBijb",
-          "Magento-Website-Code": "base",
-          "Magento-Store-Code": "main_website_store",
-          "Magento-Store-View-Code": "default",
+          "Magento-Environment-Id": "QyEqr5zS1dMDikt66dgJnP",
+          "Magento-Website-Code": "WEBSITE_CODE",
+          "Magento-Store-Code": "STORE_CODE",
+          "Magento-Store-View-Code": "",
           "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
           "X-Api-Key": "storefront-catalog-apollo",
           "content-type": "application/json"
@@ -19,15 +19,15 @@
         "environment": "Testing",
         "store-id": 1,
         "store-name": "suite release 3 prex dropin accs",
-        "store-url": "https://accssterel3--aem-boilerplate-commerce--hlxsites.aem.live/",
+        "store-url": "https://acosterel3--aem-boilerplate-commerce--hlxsites.aem.live/",
         "store-view-id": 1,
-        "store-view-name": "default",
-        "store-view-code": "default",
+        "store-view-name": "",
+        "store-view-code": "",
         "website-id": 1,
-        "website-name": "Main Website",
-        "environment-id": "73p2eopGivDm8R1pjMBijb",
-        "website-code": "base",
-        "store-code": "main_website_store"
+        "website-name": "",
+        "environment-id": "QyEqr5zS1dMDikt66dgJnP",
+        "website-code": "WEBSITE_CODE",
+        "store-code": "STORE_CODE"
       }
     }
   }
