@@ -350,7 +350,8 @@ export default async function decorate(block) {
 
   // Set JSON-LD and Meta Tags
   events.on('aem/lcp', () => {
-    if (product) {
+    const isPrerendered = !!document.querySelector('script[type="application/ld+json"]');
+    if (product && !isPrerendered) {
       setJsonLdProduct(product);
       setMetaTags(product);
       document.title = product.name;
@@ -373,7 +374,7 @@ async function setJsonLdProduct(product) {
     attributes,
   } = product;
   const amount = priceRange?.minimum?.final?.amount || price?.final?.amount;
-  const brand = attributes.find((attr) => attr.name === 'brand');
+  const brand = attributes?.find((attr) => attr.name === 'brand');
 
   // get variants
   const { data } = await pdpApi.fetchGraphQl(`

@@ -12,10 +12,11 @@ import {
   fetchPlaceholders,
   commerceEndpointWithQueryParams,
   getOptionsUIDsFromUrl,
-  getSkuFromUrl,
+  getProductSku,
   loadErrorPage,
   preloadFile,
 } from '../commerce.js';
+import { isSsgPage, parseSsgData, transformToPdpFormat } from '../prerender.js';
 
 export const IMAGES_SIZES = {
   width: 960,
@@ -49,14 +50,27 @@ await initializeDropin(async () => {
   // Set Fetch Headers (Service)
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
-  const sku = getSkuFromUrl();
+  // For SSG pages, prepare the data before pdp.js initialization
+  if (isSsgPage()) {
+    const parsedData = await parseSsgData();
+    const transformedData = transformToPdpFormat(parsedData);
+    window.product = transformedData;
+  }
+
+  const sku = getProductSku();
   const optionsUIDs = getOptionsUIDsFromUrl();
 
-  const [product, labels] = await Promise.all([
-    fetchProductData(sku, { optionsUIDs, skipTransform: true }).then(preloadImageMiddleware),
-    fetchPlaceholders('placeholders/pdp.json'),
-  ]);
+  let product;
+  if (window.product && !optionsUIDs?.length) {
+    product = await preloadImageMiddleware(window.product);
+  } else {
+    product = await fetchProductData(sku, {
+      optionsUIDs,
+      skipTransform: true,
+    }).then(preloadImageMiddleware);
+  }
 
+  const labels = await fetchPlaceholders();
   if (!product?.sku) {
     return loadErrorPage();
   }
@@ -72,6 +86,16 @@ await initializeDropin(async () => {
       initialData: { ...product },
     },
   };
+
+  // Clean up existing product details after pdp.js has parsed them
+  if (isSsgPage()) {
+    const productDetails = document.querySelector('.product-details');
+    if (productDetails) {
+      while (productDetails.firstChild) {
+        productDetails.removeChild(productDetails.firstChild);
+      }
+    }
+  }
 
   // Initialize Dropins
   return initializers.mountImmediately(initialize, {
