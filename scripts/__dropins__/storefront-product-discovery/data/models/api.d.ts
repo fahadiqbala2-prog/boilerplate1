@@ -1,6 +1,8 @@
 import { Product } from './product';
 
+export type Scope = 'search' | 'popover' | string;
 export interface SearchVariables {
+    scope?: Scope;
     phrase?: string;
     filter?: SearchFilter[];
     sort?: SortOrder[];
@@ -48,6 +50,10 @@ export interface ProductSearchResult {
     };
     suggestions?: string[];
     totalCount: number;
+    metadata?: {
+        filterableAttributes: RefineOption[];
+        sortableAttributes: RefineOption[];
+    };
 }
 export interface SearchFacet {
     title: string;
