@@ -4,6 +4,16 @@
     gap: var(--spacing-big) 0;
 }
 
+<<<<<<< HEAD
+=======
+.checkout__merged-cart-banner {
+    display: grid;
+    grid-column: 1 / -1;
+    align-items: start;
+    grid-template-columns: auto;
+}
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 .checkout__main {
     display: grid;
     row-gap: var(--spacing-xbig);
@@ -36,12 +46,40 @@
     border-bottom: var(--shape-border-width-3) solid var(--color-neutral-400);
 }
 
+<<<<<<< HEAD
+=======
+/* Server error visibility */
+.checkout__server-error {
+    display: none;
+}
+
+/* Show when it contains actual error content */
+.checkout__server-error:has(.dropin-illustrated-message) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Safari fallback: show when not empty, but this may show empty divs briefly */
+@supports not selector(:has(*)) {
+    .checkout__server-error:not(:empty) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 /* Hide empty blocks */
 .checkout__block:empty {
     display: none;
 }
 
 /* Hide main containers when the cart is empty or there is a server error */
+<<<<<<< HEAD
+=======
+.checkout__content--error .checkout__merged-cart-banner,
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 .checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
 .checkout__content--error .checkout__shipping-form,
@@ -50,6 +88,10 @@
 .checkout__content--error .checkout__payment-methods,
 .checkout__content--error .checkout__billing-form,
 .checkout__content--error .checkout__terms-and-conditions,
+<<<<<<< HEAD
+=======
+.checkout__content--empty .checkout__merged-cart-banner,
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 .checkout__content--empty .checkout__server-error,
 .checkout__content--empty .checkout__out-of-stock,
 .checkout__content--empty .checkout__login,
@@ -63,8 +105,13 @@
 }
 
 /* Hide blocks with empty divs */
+<<<<<<< HEAD
 .checkout__server-error:has(> :empty),
 .checkout__out-of-stock:has(> :empty),
+=======
+.checkout__out-of-stock:has(> :empty),
+.checkout__merged-cart-banner:has(> :empty),
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 .checkout__delivery:has(> div:first-child:empty),
 .checkout__bill-to-shipping:has(> :empty) {
     display: none;

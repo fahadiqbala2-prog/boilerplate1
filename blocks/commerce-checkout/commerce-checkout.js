@@ -1,8 +1,16 @@
 // Dropin Tools
+<<<<<<< HEAD
+=======
+import { debounce } from '@dropins/tools/lib.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+<<<<<<< HEAD
+=======
+import { initReCaptcha } from '@dropins/tools/recaptcha.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
 // Dropin Components
 import {
@@ -131,6 +139,10 @@ export default async function decorate(block) {
   });
 
   const DEBOUNCE_TIME = 1000;
+<<<<<<< HEAD
+=======
+  const ADDRESS_INPUT_DEBOUNCE_TIME = 500;
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   const LOGIN_FORM_NAME = 'login-form';
   const SHIPPING_FORM_NAME = 'selectedShippingAddress';
   const BILLING_FORM_NAME = 'selectedBillingAddress';
@@ -142,8 +154,13 @@ export default async function decorate(block) {
   const checkoutFragment = document.createRange().createContextualFragment(`
     <div class="checkout__wrapper">
       <div class="checkout__loader"></div>
+<<<<<<< HEAD
       <div class="checkout__merged-cart-banner"></div>
       <div class="checkout__content">
+=======
+      <div class="checkout__content">
+        <div class="checkout__merged-cart-banner"></div>
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         <div class="checkout__main">
           <div class="checkout__block checkout__heading"></div>
           <div class="checkout__block checkout__empty-cart"></div>
@@ -303,14 +320,23 @@ export default async function decorate(block) {
 
     CheckoutProvider.render(BillToShippingAddress, {
       onChange: (checked) => {
+<<<<<<< HEAD
         if (!checked && billingFormRef?.current) {
           const { formData, isDataValid } = billingFormRef.current;
 
+=======
+        const billingFormValues = events.lastPayload('checkout/addresses/billing');
+        if (!checked && billingFormValues) {
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
           setAddressOnCart({
             api: checkoutApi.setBillingAddress,
             debounceMs: DEBOUNCE_TIME,
             placeOrderBtn: placeOrder,
+<<<<<<< HEAD
           })({ data: formData, isDataValid });
+=======
+          })(billingFormValues);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         }
       },
     })($billToShipping),
@@ -476,16 +502,26 @@ export default async function decorate(block) {
 
         if (
           success
+<<<<<<< HEAD
         && shippingFormRef.current
         && isFormVisible(forms[SHIPPING_FORM_NAME])
+=======
+          && shippingFormRef.current
+          && isFormVisible(forms[SHIPPING_FORM_NAME])
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         ) {
           success = shippingFormRef.current.handleValidationSubmit(false);
         }
 
         if (
           success
+<<<<<<< HEAD
         && billingFormRef.current
         && isFormVisible(forms[BILLING_FORM_NAME])
+=======
+          && billingFormRef.current
+          && isFormVisible(forms[BILLING_FORM_NAME])
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
         }
@@ -586,6 +622,10 @@ export default async function decorate(block) {
 
   async function initializeCheckout(data) {
     removeEmptyCart();
+<<<<<<< HEAD
+=======
+    await initReCaptcha(0);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
       removeOverlaySpinner();
@@ -625,6 +665,13 @@ export default async function decorate(block) {
         debounceMs: DEBOUNCE_TIME,
       });
 
+<<<<<<< HEAD
+=======
+      const notifyShippingValues = debounce((values) => {
+        events.emit('checkout/addresses/shipping', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       const storeConfig = checkoutApi.getStoreConfigCache();
 
       shippingForm = await AccountProvider.render(AddressForm, {
@@ -643,6 +690,10 @@ export default async function decorate(block) {
           if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
+<<<<<<< HEAD
+=======
+          notifyShippingValues(values);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         },
         showBillingCheckBox: false,
         showFormLoader: false,
@@ -674,6 +725,13 @@ export default async function decorate(block) {
 
       const storeConfig = checkoutApi.getStoreConfigCache();
 
+<<<<<<< HEAD
+=======
+      const notifyBillingValues = debounce((values) => {
+        events.emit('checkout/addresses/billing', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',
@@ -689,6 +747,10 @@ export default async function decorate(block) {
           const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
           if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
+<<<<<<< HEAD
+=======
+          notifyBillingValues(values);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         },
         showBillingCheckBox: false,
         showFormLoader: false,
@@ -742,6 +804,13 @@ export default async function decorate(block) {
         debounceMs: DEBOUNCE_TIME,
       });
 
+<<<<<<< HEAD
+=======
+      const notifyShippingValues = debounce((values) => {
+        events.emit('checkout/addresses/shipping', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       shippingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Deliver to new address',
         defaultSelectAddressId: shippingAddressId,
@@ -755,6 +824,10 @@ export default async function decorate(block) {
           if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
+<<<<<<< HEAD
+=======
+          notifyShippingValues(values);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         },
         selectable: true,
         selectShipping: true,
@@ -800,6 +873,13 @@ export default async function decorate(block) {
         placeOrderBtn: placeOrder,
       });
 
+<<<<<<< HEAD
+=======
+      const notifyBillingValues = debounce((values) => {
+        events.emit('checkout/addresses/billing', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       billingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Bill to new address',
         defaultSelectAddressId: billingAddressId,
@@ -811,6 +891,10 @@ export default async function decorate(block) {
           const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
           if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
+<<<<<<< HEAD
+=======
+          notifyBillingValues(values);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         },
         selectable: true,
         selectBilling: true,

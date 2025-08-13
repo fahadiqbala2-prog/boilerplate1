@@ -18,6 +18,10 @@ module.exports = defineConfig({
     stateBillingId: "NY,129",
     productImageName: "/ADB150.jpg",
     productImageNameConfigurable: "/adb124.jpg",
+<<<<<<< HEAD
+=======
+    productWithOptionImageNameConfigurable: "/adb192.jpg",
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
     aemAssetsConfig: {
       commerceConfig: {
@@ -46,7 +50,11 @@ module.exports = defineConfig({
       // Because AEM Assets uses a different Commerce instance
       // the hardcoded one in the default content source will not work.
       // To test PREX, we will render a custom draft page with our own recommendation unit id.
+<<<<<<< HEAD
       prexDraft: "/drafts/decepticons/prex-discovery-paas",
+=======
+      prexDraft: "/drafts/decepticons/products/paas/adb125",
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     },
   },
 });

@@ -13,7 +13,10 @@ import {
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import EstimateShipping from '@dropins/storefront-cart/containers/EstimateShipping.js';
+<<<<<<< HEAD
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
+=======
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
@@ -25,6 +28,13 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 // API
 import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
 
+<<<<<<< HEAD
+=======
+// Modal and Mini PDP
+import createModal from '../modal/modal.js';
+import createMiniPDP from '../commerce-mini-pdp/commerce-mini-pdp.js';
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 // Initializers
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
@@ -44,13 +54,25 @@ export default async function decorate(block) {
     'start-shopping-url': startShoppingURL = '',
     'checkout-url': checkoutURL = '',
     'enable-updating-product': enableUpdatingProduct = 'false',
+<<<<<<< HEAD
+=======
+    'undo-remove-item': undo = 'false',
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   } = readBlockConfig(block);
 
   const placeholders = await fetchPlaceholders();
 
+<<<<<<< HEAD
   const cart = Cart.getCartDataFromCache();
 
   const isEmptyCart = isCartEmpty(cart);
+=======
+  const _cart = Cart.getCartDataFromCache();
+
+  // Modal state
+  let currentModal = null;
+  let currentNotification = null;
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -74,6 +96,10 @@ export default async function decorate(block) {
   const $summary = fragment.querySelector('.cart__order-summary');
   const $emptyCart = fragment.querySelector('.cart__empty-cart');
   const $giftOptions = fragment.querySelector('.cart__gift-options');
+<<<<<<< HEAD
+=======
+  const $rightColumn = fragment.querySelector('.cart__right-column');
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
   block.innerHTML = '';
   block.appendChild(fragment);
@@ -82,6 +108,7 @@ export default async function decorate(block) {
   const routeToWishlist = '/wishlist';
 
   // Toggle Empty Cart
+<<<<<<< HEAD
   function toggleEmptyCart(state) {
     if (state) {
       $wrapper.setAttribute('hidden', '');
@@ -93,6 +120,85 @@ export default async function decorate(block) {
   }
 
   toggleEmptyCart(isEmptyCart);
+=======
+  function toggleEmptyCart(_state) {
+    $wrapper.removeAttribute('hidden');
+    $emptyCart.setAttribute('hidden', '');
+  }
+
+  // Handle Edit Button Click
+  async function handleEditButtonClick(cartItem) {
+    try {
+      // Create mini PDP content
+      const miniPDPContent = await createMiniPDP(
+        cartItem,
+        async (_updateData) => {
+          // Show success message when mini-PDP updates item
+          const productName = cartItem.name
+            || cartItem.product?.name
+            || placeholders?.Global?.CartUpdatedProductName;
+          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace(
+            '{product}',
+            productName,
+          );
+
+          // Clear any existing notifications
+          currentNotification?.remove();
+
+          currentNotification = await UI.render(InLineAlert, {
+            heading: message,
+            type: 'success',
+            variant: 'primary',
+            icon: h(Icon, { source: 'CheckWithCircle' }),
+            'aria-live': 'assertive',
+            role: 'alert',
+            onDismiss: () => {
+              currentNotification?.remove();
+            },
+          })($notification);
+
+          // Auto-dismiss after 5 seconds
+          setTimeout(() => {
+            currentNotification?.remove();
+          }, 5000);
+        },
+        () => {
+          if (currentModal) {
+            currentModal.removeModal();
+            currentModal = null;
+          }
+        },
+      );
+
+      // Create and show modal
+      currentModal = await createModal([miniPDPContent]);
+
+      if (currentModal.block) {
+        currentModal.block.setAttribute('id', 'mini-pdp-modal');
+      }
+
+      currentModal.showModal();
+    } catch (error) {
+      console.error('Error opening mini PDP modal:', error);
+
+      // Clear any existing notifications
+      currentNotification?.remove();
+
+      // Show error notification
+      currentNotification = await UI.render(InLineAlert, {
+        heading: placeholders?.Global?.ProductLoadError,
+        type: 'error',
+        variant: 'primary',
+        icon: h(Icon, { source: 'AlertWithCircle' }),
+        'aria-live': 'assertive',
+        role: 'alert',
+        onDismiss: () => {
+          currentNotification?.remove();
+        },
+      })($notification);
+    }
+  }
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
   // Render Containers
   const getProductLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
@@ -108,6 +214,10 @@ export default async function decorate(block) {
         .map((attr) => attr.trim().toLowerCase()),
       enableUpdateItemQuantity: enableUpdateItemQuantity === 'true',
       enableRemoveItem: enableRemoveItem === 'true',
+<<<<<<< HEAD
+=======
+      undo: undo === 'true',
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       slots: {
         Thumbnail: (ctx) => {
           const { item, defaultImageProps } = ctx;
@@ -132,6 +242,7 @@ export default async function decorate(block) {
             const editLink = document.createElement('div');
             editLink.className = 'cart-item-edit-link';
 
+<<<<<<< HEAD
             const productUrl = rootLink(`/products/${ctx.item.url.urlKey}/${ctx.item.topLevelSku}`);
             const params = new URLSearchParams();
 
@@ -146,12 +257,18 @@ export default async function decorate(block) {
             params.append('quantity', ctx.item.quantity);
             params.append('itemUid', ctx.item.uid);
 
+=======
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
             UI.render(Button, {
               children: placeholders?.Global?.CartEditButton,
               variant: 'tertiary',
               size: 'medium',
               icon: h(Icon, { source: 'Edit' }),
+<<<<<<< HEAD
               href: `${productUrl}?${params.toString()}`,
+=======
+              onClick: () => handleEditButtonClick(ctx.item),
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
             })(editLink);
 
             ctx.appendChild(editLink);
@@ -220,11 +337,14 @@ export default async function decorate(block) {
       },
     })($summary),
 
+<<<<<<< HEAD
     // Empty Cart
     provider.render(EmptyCart, {
       routeCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
     })($emptyCart),
 
+=======
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     provider.render(GiftOptions, {
       view: 'order',
       dataSource: 'cart',
@@ -240,6 +360,7 @@ export default async function decorate(block) {
   events.on(
     'cart/data',
     (cartData) => {
+<<<<<<< HEAD
       const urlParams = new URLSearchParams(window.location.search);
       const itemUid = urlParams.get('itemUid');
 
@@ -272,6 +393,14 @@ export default async function decorate(block) {
 
       toggleEmptyCart(isCartEmpty(cartData));
 
+=======
+      toggleEmptyCart(isCartEmpty(cartData));
+
+      const isEmpty = !cartData || cartData.totalQuantity < 1;
+      $giftOptions.style.display = isEmpty ? 'none' : '';
+      $rightColumn.style.display = isEmpty ? 'none' : '';
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
       if (!cartViewEventPublished) {
         cartViewEventPublished = true;
         publishShoppingCartViewEvent();

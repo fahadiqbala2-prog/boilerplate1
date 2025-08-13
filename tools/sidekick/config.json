@@ -1,5 +1,5 @@
 {
-  "project": "My Project",
+  "project": "boilerplate1",
   "editUrlLabel": "Document Authoring",
-  "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}"
+  "editUrlPattern": "https://da.live/edit#/fahadiqbala2-prog/boilerplate1{{pathname}}"
 }

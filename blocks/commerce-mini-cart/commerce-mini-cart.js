@@ -2,6 +2,19 @@ import { render as provider } from '@dropins/storefront-cart/render.js';
 import MiniCart from '@dropins/storefront-cart/containers/MiniCart.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+<<<<<<< HEAD
+=======
+import {
+  InLineAlert,
+  Icon,
+  provider as UI,
+  Button,
+} from '@dropins/tools/components.js';
+import { h } from '@dropins/tools/preact.js';
+
+import createModal from '../modal/modal.js';
+import createMiniPDP from '../commerce-mini-pdp/commerce-mini-pdp.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
 // Initializers
 import '../../scripts/initializers/cart.js';
@@ -15,6 +28,10 @@ export default async function decorate(block) {
     'cart-url': cartURL = '',
     'checkout-url': checkoutURL = '',
     'enable-updating-product': enableUpdatingProduct = 'false',
+<<<<<<< HEAD
+=======
+    'undo-remove-item': undo = 'false',
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   } = readBlockConfig(block);
 
   // Get translations for custom messages
@@ -25,6 +42,13 @@ export default async function decorate(block) {
     UPDATED: placeholders?.Global?.MiniCartUpdatedMessage,
   };
 
+<<<<<<< HEAD
+=======
+  // Modal state
+  let currentModal = null;
+  let currentCartNotification = null;
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   // Create a container for the update message
   const updateMessage = document.createElement('div');
   updateMessage.className = 'commerce-mini-cart__update-message';
@@ -48,6 +72,78 @@ export default async function decorate(block) {
     }, 3000);
   };
 
+<<<<<<< HEAD
+=======
+  // Handle Edit Button Click
+  async function handleEditButtonClick(cartItem) {
+    try {
+      // Create mini PDP content
+      const miniPDPContent = await createMiniPDP(
+        cartItem,
+        async (_updateData) => {
+          const productName = cartItem.name
+            || cartItem.product?.name
+            || placeholders?.Global?.CartUpdatedProductName;
+          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace(
+            '{product}',
+            productName,
+          );
+
+          // Show message in the main cart page
+          const cartNotification = document.querySelector(
+            '.cart__notification',
+          );
+          if (cartNotification) {
+            // Clear any existing cart notifications
+            currentCartNotification?.remove();
+
+            currentCartNotification = await UI.render(InLineAlert, {
+              heading: message,
+              type: 'success',
+              variant: 'primary',
+              icon: h(Icon, { source: 'CheckWithCircle' }),
+              'aria-live': 'assertive',
+              role: 'alert',
+              onDismiss: () => {
+                currentCartNotification?.remove();
+              },
+            })(cartNotification);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+              currentCartNotification?.remove();
+            }, 5000);
+          }
+
+          // Also trigger message in the mini-cart
+          showMessage(message);
+        },
+        () => {
+          if (currentModal) {
+            currentModal.removeModal();
+            currentModal = null;
+          }
+        },
+      );
+
+      currentModal = await createModal([miniPDPContent]);
+
+      if (currentModal.block) {
+        currentModal.block.setAttribute('id', 'mini-pdp-modal');
+      }
+
+      currentModal.showModal();
+    } catch (error) {
+      console.error('Error opening mini PDP modal:', error);
+
+      // Show error message using mini-cart's message system
+      showMessage(
+        placeholders?.Global?.ProductLoadError,
+      );
+    }
+  }
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   // Add event listeners for cart updates
   events.on('cart/product/added', () => showMessage(MESSAGES.ADDED), {
     eager: true,
@@ -56,6 +152,26 @@ export default async function decorate(block) {
     eager: true,
   });
 
+<<<<<<< HEAD
+=======
+  // Prevent mini cart from closing when undo is enabled
+  if (undo === 'true') {
+    // Add event listener to prevent event bubbling from remove buttons
+    block.addEventListener('click', (e) => {
+      // Check if click is on a remove button or within an undo-related element
+      const isRemoveButton = e.target.closest('[class*="remove"]')
+        || e.target.closest('[data-testid*="remove"]')
+        || e.target.closest('[class*="undo"]')
+        || e.target.closest('[data-testid*="undo"]');
+
+      if (isRemoveButton) {
+        // Stop the event from bubbling up to document level
+        e.stopPropagation();
+      }
+    });
+  }
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   block.innerHTML = '';
 
   // Render MiniCart
@@ -65,6 +181,10 @@ export default async function decorate(block) {
     routeCart: cartURL ? () => rootLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
     routeProduct: getProductLink,
+<<<<<<< HEAD
+=======
+    undo: undo === 'true',
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
     slots: {
       Thumbnail: (ctx) => {
@@ -87,6 +207,7 @@ export default async function decorate(block) {
           const editLinkContainer = document.createElement('div');
           editLinkContainer.className = 'cart-item-edit-container';
 
+<<<<<<< HEAD
           const editButton = document.createElement('button');
           editButton.className = 'cart-item-edit-link';
           editButton.textContent = 'Edit';
@@ -111,6 +232,20 @@ export default async function decorate(block) {
           });
 
           editLinkContainer.appendChild(editButton);
+=======
+          const editLink = document.createElement('div');
+          editLink.className = 'cart-item-edit-link';
+
+          UI.render(Button, {
+            children: placeholders?.Global?.CartEditButton,
+            variant: 'tertiary',
+            size: 'medium',
+            icon: h(Icon, { source: 'Edit' }),
+            onClick: () => handleEditButtonClick(item),
+          })(editLink);
+
+          editLinkContainer.appendChild(editLink);
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
           ctx.appendChild(editLinkContainer);
         }
       },

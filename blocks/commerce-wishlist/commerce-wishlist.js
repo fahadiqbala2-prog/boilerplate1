@@ -1,15 +1,40 @@
 import * as cartApi from '@dropins/storefront-cart/api.js';
+<<<<<<< HEAD
+=======
+import * as pdpApi from '@dropins/storefront-pdp/api.js';
+import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import { render as wishlistRenderer } from '@dropins/storefront-wishlist/render.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
 import { events } from '@dropins/tools/event-bus.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
+<<<<<<< HEAD
 import { rootLink } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
+=======
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import { commerceEndpointWithQueryParams, rootLink } from '../../scripts/commerce.js';
+import '../../scripts/initializers/wishlist.js';
+import { readBlockConfig } from '../../scripts/aem.js';
+
+// Initialize
+
+// Set Fetch Endpoint (Service)
+pdpApi.setEndpoint(await commerceEndpointWithQueryParams());
+
+// Set Fetch Headers (Service)
+pdpApi.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
+
+const WISHLIST_IMAGE_DIMENSIONS = {
+  width: 288,
+  height: 288,
+};
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
 const showAuthModal = (event) => {
   if (event) {
@@ -65,5 +90,23 @@ export default async function decorate(block) {
     moveProdToCart: cartApi.addProductsToCart,
     routeProdDetailPage: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
     onLoginClick: showAuthModal,
+<<<<<<< HEAD
+=======
+    getProductData: pdpApi.getProductData,
+    getRefinedProduct: pdpApi.getRefinedProduct,
+    slots: {
+      image: (ctx) => {
+        const { item, defaultImageProps } = ctx;
+        tryRenderAemAssetsImage(ctx, {
+          alias: item.product.sku,
+          imageProps: defaultImageProps,
+          params: {
+            width: defaultImageProps.width || WISHLIST_IMAGE_DIMENSIONS.width,
+            height: defaultImageProps.height || WISHLIST_IMAGE_DIMENSIONS.height,
+          },
+        });
+      },
+    },
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   })(block);
 }

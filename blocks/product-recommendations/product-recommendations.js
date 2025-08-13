@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+// Dropin Tools
+import { events } from '@dropins/tools/event-bus.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 // Dropin Components
 import { Button, Icon, provider as UI } from '@dropins/tools/components.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
@@ -8,13 +15,20 @@ import * as cartApi from '@dropins/storefront-cart/api.js';
 // Recommendations Dropin
 import ProductList from '@dropins/storefront-recommendations/containers/ProductList.js';
 import { render as provider } from '@dropins/storefront-recommendations/render.js';
+<<<<<<< HEAD
+=======
+import { publishRecsItemAddToCartClick } from '@dropins/storefront-recommendations/api.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
 // Wishlist Dropin
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 
 // Block-level
+<<<<<<< HEAD
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+=======
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
@@ -114,6 +128,23 @@ export default async function decorate(block) {
     // Get purchase history
     context.userPurchaseHistory = getPurchaseHistory(storeViewCode);
 
+<<<<<<< HEAD
+=======
+    let recommendationsData = null;
+
+    // Get data from the event bus to set publish events
+    events.on(
+      'recommendations/data',
+      (data) => {
+        recommendationsData = data;
+        if (data?.items?.length) {
+          recommendationsData = data;
+        }
+      },
+      { eager: true },
+    );
+
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     try {
       await Promise.all([
         provider.render(ProductList, {
@@ -136,7 +167,32 @@ export default async function decorate(block) {
                 UI.render(Button, {
                   children: labels.Global?.AddProductToCart,
                   icon: Icon({ source: 'Cart' }),
+<<<<<<< HEAD
                   onClick: () => cartApi.addProductsToCart([{ sku: ctx.item.sku, quantity: 1 }]),
+=======
+                  onClick: (event) => {
+                    cartApi.addProductsToCart([
+                      { sku: ctx.item.sku, quantity: 1 },
+                    ]);
+                    // Prevent the click event from bubbling up to the parent span
+                    // to avoid triggering the recs-item-click event
+                    event.stopPropagation();
+                    // Publish ACDL event for add to cart click
+                    const recommendationUnit = recommendationsData?.find(
+                      (unit) => unit.items?.some(
+                        (unitItem) => unitItem.sku === ctx.item.sku,
+                      ),
+                    );
+                    publishRecsItemAddToCartClick({
+                      recommendationUnit,
+                      pagePlacement: 'product-list',
+                      yOffsetTop: addToCart.getBoundingClientRect().top ?? 0,
+                      yOffsetBottom:
+                        addToCart.getBoundingClientRect().bottom ?? 0,
+                      productId: ctx.index,
+                    });
+                  },
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
                   variant: 'primary',
                 })(addToCart);
               } else {

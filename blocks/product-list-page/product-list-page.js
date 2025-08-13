@@ -8,6 +8,10 @@ import { WishlistToggle } from '@dropins/storefront-wishlist/containers/Wishlist
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
+<<<<<<< HEAD
+=======
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
@@ -72,11 +76,44 @@ export default async function decorate(block) {
 
   return Promise.all([
     provider.render(ResultsInfo, { })($resultInfo),
+<<<<<<< HEAD
     provider.render(Facets, { })($facets),
+=======
+    provider.render(Facets, {
+      slots: {
+        Facet: (ctx) => {
+          // On Category pages (not search), remove categories facet as you
+          // cannot filter with category and categoryPath. MSRCH-5143 for more.
+          const isSearch = !categoryPathConfig.categoryPath;
+          if (!isSearch && ctx.data.attribute === 'categories') {
+            ctx.replaceWith(document.createElement('div'));
+          }
+        },
+      },
+    })($facets),
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     provider.render(ProductList, {
       routeProduct: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
       ...categoryPathConfig,
       slots: {
+<<<<<<< HEAD
+=======
+        ProductImage: (ctx) => {
+          const { product, defaultImageProps } = ctx;
+          const anchorWrapper = document.createElement('a');
+          anchorWrapper.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
+
+          tryRenderAemAssetsImage(ctx, {
+            alias: product.sku,
+            imageProps: defaultImageProps,
+            wrapper: anchorWrapper,
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
+          });
+        },
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
         ProductActions: (ctx) => {
           const actionsWrapper = document.createElement('div');
           actionsWrapper.className = 'product-discovery-product-actions';

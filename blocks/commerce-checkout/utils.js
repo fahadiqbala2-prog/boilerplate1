@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+/* eslint-disable import/no-unresolved */
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 import { debounce } from '@dropins/tools/lib.js';
 
 export function scrollToElement(element) {

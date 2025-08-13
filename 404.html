@@ -3,22 +3,44 @@
 
 <head>
   <title>Page not found</title>
+<<<<<<< HEAD
   <script type="importmap">
+=======
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
+    move-to-http-header="true"
+  >
+  <script nonce="aem" type="importmap">
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     {
         "imports": {
             "@dropins/tools/": "/scripts/__dropins__/tools/",
             "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+<<<<<<< HEAD
             "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/"
         }
     }
   </script>
   <script type="text/javascript">
+=======
+            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+            "@dropins/storefront-personalization/": "/scripts/__dropins__/storefront-personalization/"
+        }
+    }
+  </script>
+  <script nonce="aem" type="text/javascript">
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
+<<<<<<< HEAD
   <script type="module">
+=======
+  <script nonce="aem" type="module">
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     await fetch('/metadata.json')
       .then((res) => res.json())
       .then(({ data = [] }) => {
@@ -54,8 +76,13 @@
         console.error(err);
       });
   </script>
+<<<<<<< HEAD
   <script src="/scripts/scripts.js" type="module"></script>
   <script type="module">
+=======
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <script nonce="aem" type="module">
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -71,7 +98,11 @@
       }
     });
   </script>
+<<<<<<< HEAD
   <script type="module">
+=======
+  <script nonce="aem" type="module">
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
     import { sampleRUM } from '/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>

@@ -13,7 +13,11 @@ import {
 import { products } from "../../fixtures";
 import { signUpUser } from "../../actions";
 
+<<<<<<< HEAD
 describe("Verify guest user can manage products across wishlist and cart", { tags: "@skipSaas" }, () => {
+=======
+describe("Verify guest user can manage products across wishlist and cart", () => {
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
   beforeEach(() => {
     cy.visit("");
     cy.get(".wishlist-wrapper").should('be.visible').click();
@@ -148,10 +152,17 @@ describe("Verify guest user can manage products across wishlist and cart", { tag
 
     assertWishlistTitleHasLink(
       "Configurable product",
+<<<<<<< HEAD
       "/products/cypress-configurable-product-latest/CYPRESS456"
     )(".commerce-wishlist-wrapper");
 
     assertWishlistProductImage("/adb192.jpg")(".commerce-wishlist-wrapper");
+=======
+      "/products/cypress-configurable-product-latest-red/CYPRESS456"
+    )(".commerce-wishlist-wrapper");
+
+    assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
+>>>>>>> 060f85c2316df68cdc0a93a366e794fd21eaaf9f
 
     assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
 
